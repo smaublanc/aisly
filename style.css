@@ -1,0 +1,102 @@
+/* Aisly — DA de l'app (Theme.swift) : « chaleur de cuisine française moderne ».
+   Crème #FBF5EC→#F6E7D6, terracotta #C0563A, encre #2A211C, titres serif (Newsreader). */
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap');
+
+:root {
+  --accent: #C0563A;
+  --accent-dark: #A6472E;
+  --ink: #2A211C;
+  --ink-soft: #8A7768;
+  --ink-muted: #5C4F43;
+  --bg-top: #FBF5EC;
+  --bg-bottom: #F6E7D6;
+  --surface: #FFFDF9;
+  --hairline: rgba(42, 33, 28, 0.10);
+  --shadow: 0 18px 40px -24px rgba(42, 33, 28, 0.35);
+  --radius: 20px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  color: var(--ink);
+  background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+/* Serif héros */
+h1, h2, h3, .serif { font-family: "Newsreader", Georgia, "Times New Roman", serif; font-weight: 500; letter-spacing: -0.01em; }
+
+/* En-tête */
+header.site {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(251, 245, 236, 0.82);
+  backdrop-filter: saturate(1.4) blur(12px);
+  -webkit-backdrop-filter: saturate(1.4) blur(12px);
+  border-bottom: 1px solid var(--hairline);
+}
+header.site .wrap { display: flex; align-items: center; justify-content: space-between; height: 62px; }
+.brand { font-family: "Newsreader", Georgia, serif; font-size: 1.5rem; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: -0.02em; }
+.brand span { color: var(--accent); }
+nav.site a { color: var(--ink-muted); text-decoration: none; font-size: 0.95rem; margin-left: 22px; transition: color .15s; }
+nav.site a:hover, nav.site a.active { color: var(--accent); }
+
+/* Hero */
+.hero { text-align: center; padding: 68px 0 20px; }
+.hero .eyebrow { color: var(--accent); font-weight: 600; font-size: 0.82rem; letter-spacing: 0.14em; text-transform: uppercase; }
+.hero h1 { font-size: clamp(2.6rem, 8vw, 4.2rem); line-height: 1.04; margin: 14px 0 10px; }
+.hero p.lead { font-size: 1.22rem; color: var(--ink-muted); max-width: 30ch; margin: 0 auto; }
+
+/* Divider « menu de restaurant » (motif de l'app) */
+.menu-rule { display: flex; align-items: center; gap: 16px; margin: 54px 0 26px; color: var(--accent); }
+.menu-rule::before, .menu-rule::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(192, 86, 58, 0.45), transparent); }
+.menu-rule h2 { font-size: 1.55rem; color: var(--ink); white-space: nowrap; }
+
+/* Captures téléphone */
+.shots { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin: 30px 0 8px; }
+.shots img { width: 214px; max-width: 44vw; border-radius: 30px; box-shadow: var(--shadow); border: 1px solid var(--hairline); background: var(--surface); }
+
+/* Cartes / prose */
+.card { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px 28px; margin: 18px 0; }
+.prose h2 { font-size: 1.7rem; margin: 40px 0 12px; }
+.prose h3 { font-size: 1.16rem; font-weight: 600; margin: 26px 0 6px; color: var(--ink); }
+.prose p, .prose li { color: var(--ink-muted); }
+.prose p { margin: 10px 0; }
+.prose ul { margin: 8px 0 8px 20px; }
+.prose li { margin: 5px 0; }
+.prose a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(192, 86, 58, 0.35); }
+.prose a:hover { border-bottom-color: var(--accent); }
+.prose strong { color: var(--ink); font-weight: 600; }
+.muted { color: var(--ink-soft); font-size: 0.9rem; }
+
+/* Feature grid (accueil) */
+.features { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin: 24px 0; }
+.feature { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius); padding: 22px; }
+.feature .dot { display: inline-block; width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(150deg, #E07A50, var(--accent-dark)); margin-bottom: 12px; }
+.feature h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; }
+.feature p { color: var(--ink-muted); font-size: 0.97rem; }
+
+/* CTA bouton */
+.btn { display: inline-block; background: linear-gradient(150deg, var(--accent), var(--accent-dark)); color: #FFF8F2; text-decoration: none; font-weight: 600; padding: 13px 26px; border-radius: 18px; box-shadow: var(--shadow); transition: transform .12s; }
+.btn:hover { transform: translateY(-1px); }
+.center { text-align: center; }
+
+/* Pied */
+footer.site { border-top: 1px solid var(--hairline); margin-top: 64px; padding: 30px 0 46px; }
+footer.site .wrap { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; justify-content: space-between; color: var(--ink-soft); font-size: 0.9rem; }
+footer.site a { color: var(--ink-muted); text-decoration: none; }
+footer.site a:hover { color: var(--accent); }
+
+@media (max-width: 560px) {
+  .hero { padding: 46px 0 10px; }
+  .shots img { width: 46vw; }
+}
