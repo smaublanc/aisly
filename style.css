@@ -45,10 +45,11 @@ header.site {
   border-bottom: 1px solid var(--hairline);
 }
 header.site .wrap { display: flex; align-items: center; justify-content: space-between; height: 62px; }
-.brand { display: inline-flex; align-items: center; gap: 9px; font-family: "Newsreader", Georgia, serif; font-size: 1.5rem; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: -0.02em; }
-.brand img { width: 30px; height: 30px; border-radius: 8px; box-shadow: 0 3px 8px -3px rgba(42, 33, 28, 0.4); }
-/* Le « y » terracotta, LÉGÈREMENT détaché du reste — clin d'œil à la signature du wordmark de l'app. */
-.brand span { color: var(--accent); margin-left: 0.16em; }
+.brand { display: inline-flex; align-items: center; font-family: "Newsreader", Georgia, serif; font-size: 1.5rem; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: -0.02em; }
+/* margin-right (pas un flex `gap`) : sinon le gap s'insérerait AUSSI entre « Aisl » et le « y » (2 items flex). */
+.brand img { width: 30px; height: 30px; border-radius: 8px; margin-right: 9px; box-shadow: 0 3px 8px -3px rgba(42, 33, 28, 0.4); }
+/* Le « y » terracotta, COLLÉ au reste (« Aisly » d'un seul tenant, juste la couleur qui signe). */
+.brand span { color: var(--accent); }
 nav.site a { color: var(--ink-muted); text-decoration: none; font-size: 0.95rem; margin-left: 22px; transition: color .15s; }
 nav.site a:hover, nav.site a.active { color: var(--accent); }
 
@@ -92,7 +93,7 @@ a.store-badge:hover { transform: translateY(-1px); }
 /* Feature grid (accueil) */
 .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin: 24px 0; }
 .feature { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius); padding: 22px; }
-.feature .dot { display: inline-block; width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(150deg, #E07A50, var(--accent-dark)); margin-bottom: 12px; }
+.feature .dot { display: block; width: 42px; height: 42px; border-radius: 11px; margin-bottom: 14px; box-shadow: 0 4px 10px -5px rgba(42, 33, 28, 0.45); }
 .feature h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; }
 .feature p { color: var(--ink-muted); font-size: 0.97rem; }
 
