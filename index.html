@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Aisly — Zéro gâchis, zéro routine</title>
-<meta name="description" content="Aisly traque tes protéines fraîches, te réveille pile avant la date, et te souffle une idée de cuisson de saison. Local, privé, sans compte.">
+<title>Aisly — Le Shazam du frigo</title>
+<meta name="description" content="Une photo en rangeant tes courses : Aisly lit la date, te réveille pile avant qu'elle n'arrive, et te souffle une idée de cuisson de saison. Local, privé, sans compte.">
 <link rel="icon" type="image/png" href="img/icon.png">
 <link rel="apple-touch-icon" href="img/icon.png">
 <link rel="canonical" href="https://smaublanc.github.io/aisly/">
@@ -15,15 +15,16 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Aisly">
 <meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Aisly — Zéro gâchis, zéro routine">
-<meta property="og:description" content="Aisly traque tes protéines fraîches, te réveille pile avant la date, et te souffle une idée de cuisson de saison. Local, privé, sans compte.">
+<meta property="og:title" content="Aisly — Le Shazam du frigo">
+<meta property="og:description" content="Une photo en rangeant tes courses : Aisly lit la date, te réveille pile avant qu'elle n'arrive, et te souffle une idée de saison. Local, privé, sans compte.">
 <meta property="og:url" content="https://smaublanc.github.io/aisly/">
 <meta property="og:image" content="https://smaublanc.github.io/aisly/img/icon.png">
 <meta property="og:image:alt" content="Aisly — l'anti-gaspi qui inspire">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Aisly — Zéro gâchis, zéro routine">
-<meta name="twitter:description" content="Aisly traque tes protéines fraîches, te réveille pile avant la date, et te souffle une idée de cuisson de saison. Local, privé, sans compte.">
+<meta name="twitter:title" content="Aisly — Le Shazam du frigo">
+<meta name="twitter:description" content="Une photo en rangeant tes courses : Aisly lit la date, te réveille pile avant qu'elle n'arrive, et te souffle une idée de saison. Local, privé, sans compte.">
 <meta name="twitter:image" content="https://smaublanc.github.io/aisly/img/icon.png">
+<link rel="preload" as="image" href="img/scan.jpg" fetchpriority="high">
 <link rel="stylesheet" href="style.css">
 <script type="application/ld+json">
 {
@@ -36,6 +37,12 @@
   "inLanguage": "fr-FR",
   "url": "https://smaublanc.github.io/aisly/",
   "image": "https://smaublanc.github.io/aisly/img/icon.png",
+  "screenshot": [
+    "https://smaublanc.github.io/aisly/img/scan.jpg",
+    "https://smaublanc.github.io/aisly/img/planning.jpg",
+    "https://smaublanc.github.io/aisly/img/tips.jpg",
+    "https://smaublanc.github.io/aisly/img/frigo.jpg"
+  ],
   "description": "Aisly traque vos protéines fraîches, vous réveille pile avant la date de péremption et vous souffle une idée de cuisson de saison. Anti-gaspi, local et privé.",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
   "author": { "@type": "Person", "name": "Sébastien Maublanc" }
@@ -63,61 +70,126 @@
   </div>
 </header>
 
-<main class="wrap">
-  <section class="hero">
-    <img class="hero-icon" src="img/icon.png" alt="Aisly">
-    <p class="eyebrow">L'anti-gaspi qui inspire</p>
-    <h1>Zéro gâchis,<br>zéro routine.</h1>
-    <p class="lead">Tes protéines fraîches, cuisinées pile au bon moment — jamais deux fois pareil.</p>
-    <!-- LIEN APP STORE : dès que l'app est validée, remplacer le <span> par :
-         <a class="store-badge" href="https://apps.apple.com/fr/app/id6787950805">Télécharger sur l'App&nbsp;Store</a> -->
-    <div class="store">
-      <span class="store-badge is-soon" aria-disabled="true">Bientôt sur l'App&nbsp;Store</span>
+<main>
+  <!-- ============ HERO ============ -->
+  <section class="hero-split wrap-wide">
+    <div class="hero-copy" data-reveal>
+      <p class="eyebrow">L'anti-gaspi qui inspire</p>
+      <h1>Le Shazam<br>du frigo<em class="dot">.</em></h1>
+      <p class="lead">Une photo en rangeant tes courses. Aisly te réveille pile avant la date — avec une idée de saison, jamais deux fois pareil.</p>
+      <!-- LIEN APP STORE : dès que l'app est validée, remplacer le <span> par :
+           <a class="store-badge" href="https://apps.apple.com/fr/app/id6787950805">Télécharger sur l'App&nbsp;Store</a> -->
+      <div class="store">
+        <span class="store-badge is-soon" aria-disabled="true">Bientôt sur l'App&nbsp;Store</span>
+        <p class="store-note">14 jours offerts · sans compte · 100&nbsp;% privé</p>
+      </div>
+    </div>
+    <figure class="hero-visual" data-reveal>
+      <img class="poster tilt-r" src="img/scan.jpg" width="720" height="1564"
+           alt="Aisly sur iPhone : « Touchez pour scanner », la citation de chef du jour et les prochaines protéines à cuisiner"
+           fetchpriority="high">
+    </figure>
+  </section>
+
+  <!-- ============ BANDE DE VALEURS ============ -->
+  <section class="values" aria-label="Ce qu'Aisly promet">
+    <div class="wrap-wide values-row" data-reveal>
+      <span>Une photo</span><i>·</i><span>L'app dort</span><i>·</i><span>Le bon rappel</span><i>·</i><span>Une idée de saison</span><i>·</i><span>100&nbsp;% privé</span>
     </div>
   </section>
 
-  <section class="shots">
-    <img src="img/scan.png" alt="Écran de scan d'Aisly" loading="lazy">
-    <img src="img/tips.png" alt="Idée de cuisson de saison dans Aisly" loading="lazy">
-    <img src="img/planning.png" alt="Programme de cuisson dans Aisly" loading="lazy">
+  <!-- ============ LES TROIS ACTES ============ -->
+  <section class="act wrap-wide" data-reveal>
+    <figure class="act-visual">
+      <img class="poster tilt-l" src="img/planning.jpg" width="720" height="1564" loading="lazy"
+           alt="Le programme d'Aisly : ta semaine s'écrit toute seule, avec la suggestion congélateur quand ça se bouscule">
+    </figure>
+    <div class="act-copy">
+      <p class="act-index">01</p>
+      <h2>Oublie<em class="dot">.</em></h2>
+      <p>Aucun inventaire à tenir&nbsp;: l'app dort. Ta semaine s'écrit toute seule — le bon plat, le bon soir, toujours avant la date. Et quand ça se bouscule, Aisly suggère le congélateur. Jamais la poubelle.</p>
+    </div>
   </section>
 
-  <div class="menu-rule"><h2>Comment ça marche</h2></div>
-  <div class="features">
-    <div class="feature">
-      <img class="dot" src="img/icon.png" alt="" loading="lazy">
-      <h3>Scanne</h3>
-      <p>En rangeant les courses, photographie tes viandes, volailles et poissons. Date lue toute seule, ou estimée en un tap.</p>
+  <section class="act flip wrap-wide" data-reveal>
+    <figure class="act-visual">
+      <img class="poster tilt-r" src="img/tips.jpg" width="720" height="1564" loading="lazy"
+           alt="Les tips d'Aisly : des idées de cuisson de saison, réalisables avec le fond de placard">
+    </figure>
+    <div class="act-copy">
+      <p class="act-index">02</p>
+      <h2>Régale-toi<em class="dot">.</em></h2>
+      <p>À la place de «&nbsp;poulet, encore&nbsp;», une idée de saison réalisable maintenant, fond de placard uniquement. Quatre cents twists signés, jamais deux fois le même.</p>
     </div>
-    <div class="feature">
-      <img class="dot" src="img/icon.png" alt="" loading="lazy">
-      <h3>L'app dort</h3>
-      <p>Aucun inventaire à tenir. Aisly ne te réveille que quand une protéine approche de sa date — jamais pour rien.</p>
-    </div>
-    <div class="feature">
-      <img class="dot" src="img/icon.png" alt="" loading="lazy">
-      <h3>Cuisine autrement</h3>
-      <p>À la place de « poulet, encore », une idée de saison, réalisable maintenant, fond de placard uniquement.</p>
-    </div>
-    <div class="feature">
-      <img class="dot" src="img/icon.png" alt="" loading="lazy">
-      <h3>Sors d'un geste</h3>
-      <p>Cuisiné, congelé ou jeté : la protéine sort de ton suivi. Tu ne gères jamais ton stock.</p>
-    </div>
-  </div>
+  </section>
 
-  <div class="menu-rule"><h2>Local & privé</h2></div>
-  <div class="card prose center">
-    <p>Aisly fonctionne <strong>sur ton iPhone</strong>. Pas de compte, pas de cloud, pas de pistage. Tes données restent chez toi.</p>
-    <p style="margin-top:16px"><a class="btn" href="privacy.html">Notre confidentialité</a></p>
-  </div>
+  <section class="act wrap-wide" data-reveal>
+    <figure class="act-visual">
+      <img class="poster tilt-l" src="img/frigo.jpg" width="720" height="1564" loading="lazy"
+           alt="Le frigo d'Aisly : chaque protéine sort du suivi d'un geste — cuisinée ou congelée">
+    </figure>
+    <div class="act-copy">
+      <p class="act-index">03</p>
+      <h2>Range d'un geste<em class="dot">.</em></h2>
+      <p>Cuisiné, congelé — la protéine sort du suivi d'un tap. Tu ne gères jamais un stock&nbsp;: Aisly n'est pas un inventaire, c'est un allié.</p>
+    </div>
+  </section>
+
+  <!-- ============ CITATION ============ -->
+  <section class="quote-block" data-reveal>
+    <div class="wrap">
+      <blockquote>
+        <p>«&nbsp;Faites simple.&nbsp;»</p>
+        <cite>— Auguste Escoffier</cite>
+      </blockquote>
+      <p class="quote-note">Chaque jour, une citation de grand chef t'accueille dans l'app.</p>
+    </div>
+  </section>
+
+  <!-- ============ PRIVÉ ============ -->
+  <section class="privacy-strip wrap-wide" data-reveal>
+    <h2>Local &amp; privé, par construction<em class="dot">.</em></h2>
+    <div class="privacy-items">
+      <div class="privacy-item"><span class="tick">✓</span><h3>Pas de compte</h3><p>Aucune inscription, aucun e-mail. Tu télécharges, tu scannes.</p></div>
+      <div class="privacy-item"><span class="tick">✓</span><h3>Pas de cloud</h3><p>Tes protéines, tes dates, tes habitudes&nbsp;: tout reste sur ton iPhone.</p></div>
+      <div class="privacy-item"><span class="tick">✓</span><h3>Pas de pistage</h3><p>Zéro publicité, zéro analytics, zéro revente. C'est écrit, et c'est tenu.</p></div>
+    </div>
+    <p class="center"><a class="btn ghost" href="privacy.html">Lire notre confidentialité</a></p>
+  </section>
+
+  <!-- ============ PRIX ============ -->
+  <section class="pricing wrap" data-reveal>
+    <div class="pricing-card">
+      <p class="eyebrow">Essaie d'abord</p>
+      <h2>14 jours offerts<em class="dot">.</em></h2>
+      <p class="pricing-line">Puis <strong>2,99&nbsp;€ / mois</strong> ou <strong>19,99&nbsp;€ / an</strong> — sans engagement, résiliable à tout moment.</p>
+      <div class="store">
+        <span class="store-badge is-soon" aria-disabled="true">Bientôt sur l'App&nbsp;Store</span>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer class="site">
   <div class="wrap">
-    <span>© 2026 Aisly</span>
-    <span><a href="support.html">Support</a> · <a href="privacy.html">Confidentialité</a> · <a href="mailto:images.leo3d@gmail.com">Contact</a></span>
+    <span class="brand-foot">Aisl<span>y</span> <span class="muted">— conçu en France</span></span>
+    <span><a href="support.html">Support</a> · <a href="privacy.html">Confidentialité</a> · <a href="terms.html">CGU</a> · <a href="mailto:images.leo3d@gmail.com">Contact</a></span>
   </div>
 </footer>
+
+<script>
+(function () {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll("[data-reveal]").forEach(function (el) { el.classList.add("in"); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.14 });
+  document.querySelectorAll("[data-reveal]").forEach(function (el) { io.observe(el); });
+})();
+</script>
 </body>
 </html>

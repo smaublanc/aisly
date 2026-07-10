@@ -1,10 +1,13 @@
 /* Aisly — DA de l'app (Theme.swift) : « chaleur de cuisine française moderne ».
-   Crème #FBF5EC→#F6E7D6, terracotta #C0563A, encre #2A211C, titres serif (Newsreader). */
-@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap');
+   Crème #FBF5EC→#F6E7D6, terracotta #C0563A, encre #2A211C, titres serif (Newsreader).
+   Refonte éditoriale 2026-07 : hero split, actes alternés, posters inclinés, reveals sobres.
+   Les classes des pages légales (card/prose/menu-rule/btn/muted…) sont CONSERVÉES. */
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500&display=swap');
 
 :root {
   --accent: #C0563A;
   --accent-dark: #A6472E;
+  --accent-light: #E07A50;
   --ink: #2A211C;
   --ink-soft: #8A7768;
   --ink-muted: #5C4F43;
@@ -13,6 +16,7 @@
   --surface: #FFFDF9;
   --hairline: rgba(42, 33, 28, 0.10);
   --shadow: 0 18px 40px -24px rgba(42, 33, 28, 0.35);
+  --shadow-poster: 0 2px 6px -2px rgba(42,33,28,.18), 0 32px 64px -32px rgba(42,33,28,.42);
   --radius: 20px;
 }
 
@@ -29,12 +33,19 @@ body {
   line-height: 1.62;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
+::selection { background: rgba(192, 86, 58, 0.22); }
+
 .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+.wrap-wide { max-width: 1060px; margin: 0 auto; padding: 0 28px; }
 
 /* Serif héros */
 h1, h2, h3, .serif { font-family: "Newsreader", Georgia, "Times New Roman", serif; font-weight: 500; letter-spacing: -0.01em; }
+
+/* Le point terracotta — la signature typographique du site (comme le « y » du wordmark). */
+em.dot { font-style: normal; color: var(--accent); }
 
 /* En-tête */
 header.site {
@@ -53,31 +64,135 @@ header.site .wrap { display: flex; align-items: center; justify-content: space-b
 nav.site a { color: var(--ink-muted); text-decoration: none; font-size: 0.95rem; margin-left: 22px; transition: color .15s; }
 nav.site a:hover, nav.site a.active { color: var(--accent); }
 
-/* Hero */
-.hero { text-align: center; padding: 68px 0 20px; }
-.hero-icon { width: 88px; height: 88px; border-radius: 22px; box-shadow: var(--shadow); margin: 0 auto 24px; display: block; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 
-/* Badge App Store (état « bientôt » atténué ; devient un <a> cliquable au lancement) */
-.store { margin-top: 26px; }
-.store-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--ink); color: #FFF8F2;
-  font-weight: 600; font-size: 1rem; padding: 13px 26px; border-radius: 14px; text-decoration: none;
-  box-shadow: var(--shadow); transition: transform .12s; }
-a.store-badge:hover { transform: translateY(-1px); }
-.store-badge.is-soon { opacity: 0.6; cursor: default; }
-.hero .eyebrow { color: var(--accent); font-weight: 600; font-size: 0.82rem; letter-spacing: 0.14em; text-transform: uppercase; }
-.hero h1 { font-size: clamp(2.6rem, 8vw, 4.2rem); line-height: 1.04; margin: 14px 0 10px; }
-.hero p.lead { font-size: 1.22rem; color: var(--ink-muted); max-width: 30ch; margin: 0 auto; }
+/* ============ HERO SPLIT ============ */
+.hero-split {
+  display: grid; grid-template-columns: 1.05fr 0.95fr; align-items: center;
+  gap: clamp(28px, 5vw, 72px);
+  padding-top: clamp(48px, 8vh, 96px); padding-bottom: clamp(24px, 4vh, 56px);
+  position: relative;
+}
+/* Halo chaud derrière le visuel — la lueur du logo, très diffuse. */
+.hero-split::before {
+  content: ""; position: absolute; right: -12%; top: -18%;
+  width: 640px; height: 640px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(224, 122, 80, 0.16), transparent 70%);
+  pointer-events: none;
+}
+.eyebrow { color: var(--accent); font-weight: 600; font-size: 0.82rem; letter-spacing: 0.16em; text-transform: uppercase; }
+.hero-copy h1 {
+  font-size: clamp(3rem, 7.4vw, 5.4rem);
+  line-height: 0.98; font-weight: 600; letter-spacing: -0.025em;
+  margin: 18px 0 20px;
+}
+.hero-copy .lead { font-size: clamp(1.08rem, 1.6vw, 1.3rem); color: var(--ink-muted); max-width: 42ch; }
+.store { margin-top: 30px; }
+.store-badge {
+  display: inline-flex; align-items: center; gap: 8px; background: var(--ink); color: #FFF8F2;
+  font-weight: 600; font-size: 1rem; padding: 14px 28px; border-radius: 16px; text-decoration: none;
+  box-shadow: var(--shadow); transition: transform .15s ease, box-shadow .15s ease;
+}
+a.store-badge:hover { transform: translateY(-2px); box-shadow: 0 24px 48px -24px rgba(42,33,28,.5); }
+.store-badge.is-soon { opacity: 0.62; cursor: default; }
+.store-note { margin-top: 12px; color: var(--ink-soft); font-size: 0.88rem; letter-spacing: 0.02em; }
 
-/* Divider « menu de restaurant » (motif de l'app) */
+.hero-visual { display: flex; justify-content: center; }
+
+/* ============ POSTERS (captures marketing) ============ */
+.poster {
+  width: min(360px, 86vw); height: auto;
+  border-radius: 28px;
+  border: 1px solid var(--hairline);
+  box-shadow: var(--shadow-poster);
+  background: var(--surface);
+  transition: transform .5s cubic-bezier(.2,.7,.2,1), box-shadow .5s ease;
+}
+.tilt-r { transform: rotate(1.4deg); }
+.tilt-l { transform: rotate(-1.4deg); }
+.poster:hover { transform: rotate(0deg) translateY(-6px); box-shadow: 0 3px 8px -2px rgba(42,33,28,.2), 0 44px 88px -40px rgba(42,33,28,.5); }
+
+/* ============ BANDE DE VALEURS ============ */
+.values { border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); margin: clamp(28px, 5vh, 56px) 0; background: rgba(255, 253, 249, 0.5); }
+.values-row {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline;
+  gap: 10px 18px; padding: 18px 28px;
+  font-size: 0.8rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted);
+}
+.values-row i { color: var(--accent); font-style: normal; }
+
+/* ============ ACTES ============ */
+.act {
+  display: grid; grid-template-columns: 0.9fr 1.1fr; align-items: center;
+  gap: clamp(28px, 5vw, 80px);
+  padding-top: clamp(40px, 7vh, 88px); padding-bottom: clamp(40px, 7vh, 88px);
+}
+.act.flip .act-visual { order: 2; }
+.act.flip .act-copy { order: 1; }
+.act-visual { display: flex; justify-content: center; }
+.act-index {
+  font-family: "Newsreader", Georgia, serif; font-style: italic;
+  color: var(--accent); font-size: 1.05rem; letter-spacing: 0.08em; margin-bottom: 6px;
+}
+.act-copy h2 { font-size: clamp(2.1rem, 4.4vw, 3.3rem); font-weight: 600; letter-spacing: -0.02em; line-height: 1.02; margin-bottom: 14px; }
+.act-copy p { color: var(--ink-muted); font-size: clamp(1.02rem, 1.4vw, 1.16rem); max-width: 46ch; }
+
+/* ============ CITATION ============ */
+.quote-block { text-align: center; padding: clamp(48px, 9vh, 110px) 0; position: relative; }
+.quote-block::before {
+  content: "«"; position: absolute; left: 50%; top: -14px; transform: translateX(-50%);
+  font-family: "Newsreader", Georgia, serif; font-size: clamp(6rem, 14vw, 10rem);
+  color: rgba(192, 86, 58, 0.07); line-height: 1; pointer-events: none;
+}
+.quote-block blockquote p {
+  font-family: "Newsreader", Georgia, serif; font-style: italic; font-weight: 500;
+  font-size: clamp(2rem, 5vw, 3.4rem); letter-spacing: -0.015em; color: var(--ink);
+}
+.quote-block cite { display: block; margin-top: 14px; font-style: normal; color: var(--accent); font-weight: 600; font-size: 1.02rem; }
+.quote-note { margin-top: 22px; color: var(--ink-soft); font-size: 0.95rem; }
+
+/* ============ PRIVÉ ============ */
+.privacy-strip { text-align: center; padding-bottom: clamp(36px, 6vh, 72px); }
+.privacy-strip h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); font-weight: 600; margin-bottom: 34px; }
+.privacy-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; margin-bottom: 34px; text-align: left; }
+.privacy-item { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius); padding: 26px 24px; box-shadow: 0 10px 28px -22px rgba(42,33,28,.35); }
+.privacy-item .tick { display: inline-flex; width: 30px; height: 30px; border-radius: 50%; background: rgba(192,86,58,.12); color: var(--accent); font-weight: 700; align-items: center; justify-content: center; margin-bottom: 12px; }
+.privacy-item h3 { font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif; font-size: 1.06rem; font-weight: 650; margin-bottom: 4px; }
+.privacy-item p { color: var(--ink-muted); font-size: 0.95rem; }
+
+/* ============ PRIX ============ */
+.pricing { padding-bottom: clamp(56px, 9vh, 110px); }
+.pricing-card {
+  text-align: center; background: var(--surface);
+  border: 1px solid var(--hairline); border-radius: 30px;
+  padding: clamp(36px, 6vw, 60px) clamp(24px, 5vw, 56px);
+  box-shadow: var(--shadow-poster);
+  position: relative; overflow: hidden;
+}
+.pricing-card::before {
+  content: ""; position: absolute; inset: -40% -20% auto; height: 80%;
+  background: radial-gradient(closest-side, rgba(224,122,80,.10), transparent 70%);
+  pointer-events: none;
+}
+.pricing-card h2 { font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 600; margin: 10px 0 12px; }
+.pricing-line { color: var(--ink-muted); font-size: 1.08rem; max-width: 44ch; margin: 0 auto; }
+.pricing-line strong { color: var(--ink); font-weight: 650; }
+
+/* ============ REVEALS (sobres, coupés sous reduced-motion) ============ */
+[data-reveal] { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+[data-reveal].in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+  .poster, a.store-badge { transition: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* ============ Divider « menu de restaurant » (pages légales) ============ */
 .menu-rule { display: flex; align-items: center; gap: 16px; margin: 54px 0 26px; color: var(--accent); }
 .menu-rule::before, .menu-rule::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(192, 86, 58, 0.45), transparent); }
 .menu-rule h2 { font-size: 1.55rem; color: var(--ink); white-space: nowrap; }
 
-/* Captures téléphone */
-.shots { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin: 30px 0 8px; }
-.shots img { width: 214px; max-width: 44vw; border-radius: 30px; box-shadow: var(--shadow); border: 1px solid var(--hairline); background: var(--surface); }
-
-/* Cartes / prose */
+/* Cartes / prose (pages légales) */
 .card { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px 28px; margin: 18px 0; }
 .prose h2 { font-size: 1.7rem; margin: 40px 0 12px; }
 .prose h3 { font-size: 1.16rem; font-weight: 600; margin: 26px 0 6px; color: var(--ink); }
@@ -90,25 +205,30 @@ a.store-badge:hover { transform: translateY(-1px); }
 .prose strong { color: var(--ink); font-weight: 600; }
 .muted { color: var(--ink-soft); font-size: 0.9rem; }
 
-/* Feature grid (accueil) */
-.features { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin: 24px 0; }
-.feature { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius); padding: 22px; }
-.feature .dot { display: block; width: 42px; height: 42px; border-radius: 11px; margin-bottom: 14px; box-shadow: 0 4px 10px -5px rgba(42, 33, 28, 0.45); }
-.feature h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; }
-.feature p { color: var(--ink-muted); font-size: 0.97rem; }
-
 /* CTA bouton */
 .btn { display: inline-block; background: linear-gradient(150deg, var(--accent), var(--accent-dark)); color: #FFF8F2; text-decoration: none; font-weight: 600; padding: 13px 26px; border-radius: 18px; box-shadow: var(--shadow); transition: transform .12s; }
 .btn:hover { transform: translateY(-1px); }
+.btn.ghost { background: transparent; color: var(--accent); border: 1.5px solid rgba(192,86,58,.45); box-shadow: none; }
+.btn.ghost:hover { border-color: var(--accent); background: rgba(192,86,58,.06); }
 .center { text-align: center; }
 
 /* Pied */
-footer.site { border-top: 1px solid var(--hairline); margin-top: 64px; padding: 30px 0 46px; }
+footer.site { border-top: 1px solid var(--hairline); margin-top: 24px; padding: 30px 0 46px; }
 footer.site .wrap { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; justify-content: space-between; color: var(--ink-soft); font-size: 0.9rem; }
 footer.site a { color: var(--ink-muted); text-decoration: none; }
 footer.site a:hover { color: var(--accent); }
+.brand-foot { font-family: "Newsreader", Georgia, serif; font-weight: 600; font-size: 1.1rem; color: var(--ink); }
+.brand-foot > span:first-child, .brand-foot span:not(.muted) { color: var(--accent); }
 
-@media (max-width: 560px) {
-  .hero { padding: 46px 0 10px; }
-  .shots img { width: 46vw; }
+/* ============ RESPONSIVE ============ */
+@media (max-width: 860px) {
+  .hero-split { grid-template-columns: 1fr; text-align: center; padding-top: 44px; }
+  .hero-copy .lead { margin: 0 auto; }
+  .hero-visual { margin-top: 10px; }
+  .hero-split::before { right: auto; left: 50%; transform: translateX(-50%); top: auto; bottom: -10%; }
+  .act, .act.flip { grid-template-columns: 1fr; text-align: center; }
+  .act.flip .act-visual { order: 1; }
+  .act.flip .act-copy { order: 2; }
+  .act-copy p { margin: 0 auto; }
+  .privacy-items { text-align: center; }
 }
