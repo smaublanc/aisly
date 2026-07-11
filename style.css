@@ -96,6 +96,15 @@ nav.site a:hover, nav.site a.active { color: var(--accent); }
 a.store-badge:hover { transform: translateY(-2px); box-shadow: 0 24px 48px -24px rgba(42,33,28,.5); }
 .store-badge.is-soon { opacity: 0.62; cursor: default; }
 .store-note { margin-top: 12px; color: var(--ink-soft); font-size: 0.88rem; letter-spacing: 0.02em; }
+/* Encart Android du hero (visible SANS scroller) — renvoie à la section compteur. */
+.android-chip {
+  display: inline-flex; align-items: baseline; gap: 6px; margin-top: 16px;
+  padding: 9px 16px; border: 1px dashed rgba(192, 86, 58, 0.4); border-radius: 999px;
+  color: var(--ink-muted); font-size: 0.9rem; text-decoration: none;
+  transition: border-color .15s, background .15s;
+}
+.android-chip strong { color: var(--accent); font-weight: 600; }
+.android-chip:hover { border-color: var(--accent); background: rgba(192, 86, 58, 0.05); }
 
 .hero-visual { display: flex; justify-content: center; }
 

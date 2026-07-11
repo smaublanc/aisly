@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aisly — Modération</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="img/icon.png">
+<link rel="stylesheet" href="style.css">
+<style>
+/* Console de modération (D95) — outil PRIVÉ (lien nulle part, noindex ; la sécurité réelle est la
+   RLS Supabase : sans ligne `moderators`, un compte connecté ne voit rien). DA Aisly, dense mais douce. */
+.admin-wrap { max-width: 680px; margin: 0 auto; padding: 24px 20px 80px; }
+.login-card { max-width: 400px; margin: 10vh auto 0; background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: 24px; padding: 34px 30px; box-shadow: var(--shadow-poster); text-align: center; }
+.login-card h1 { font-size: 1.7rem; margin: 12px 0 22px; }
+.login-card img { width: 56px; height: 56px; border-radius: 14px; box-shadow: var(--shadow); }
+.login-card input { width: 100%; box-sizing: border-box; margin-bottom: 12px; padding: 13px 15px;
+  border: 1px solid var(--hairline); border-radius: 13px; font-size: 1rem; background: #fff;
+  color: var(--ink); }
+.login-card input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.login-card .btn { width: 100%; border: none; font-size: 1rem; cursor: pointer; }
+.admin-error { color: #B3261E; font-size: 0.9rem; margin: 10px 0 0; min-height: 1.2em; }
+
+.admin-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.admin-bar .brand { font-size: 1.3rem; }
+.logout { background: none; border: none; color: var(--ink-muted); font-size: 0.9rem; cursor: pointer; }
+.logout:hover { color: var(--accent); }
+
+.tabs { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+.tab { border: 1px solid var(--hairline); background: var(--surface); color: var(--ink-muted);
+  border-radius: 999px; padding: 9px 16px; font-size: 0.92rem; font-weight: 600; cursor: pointer;
+  transition: all .15s; }
+.tab .n { color: var(--accent); margin-left: 5px; }
+.tab.active { background: var(--accent); border-color: var(--accent); color: #FFF8F2; }
+.tab.active .n { color: #FFF8F2; }
+
+.tip-card { background: var(--surface); border: 1px solid var(--hairline); border-radius: 18px;
+  padding: 18px 20px; margin-bottom: 12px; box-shadow: 0 8px 20px -18px rgba(42,33,28,.4); }
+.tip-meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 8px; }
+.chip { font-size: 0.78rem; font-weight: 600; padding: 4px 10px; border-radius: 999px;
+  background: rgba(192,86,58,0.10); color: var(--accent-dark); }
+.chip.soft { background: rgba(42,33,28,0.06); color: var(--ink-muted); }
+.tip-twist { font-family: "Newsreader", Georgia, serif; font-size: 1.25rem; color: var(--ink); }
+.tip-sensory { color: var(--ink-muted); font-size: 0.95rem; margin-top: 3px; }
+.tip-byline { color: var(--ink-soft); font-size: 0.82rem; margin-top: 8px; }
+.tip-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+.act { border-radius: 12px; padding: 10px 18px; font-size: 0.92rem; font-weight: 600; cursor: pointer;
+  border: 1px solid transparent; transition: transform .1s; }
+.act:active { transform: scale(0.97); }
+.act.approve { background: linear-gradient(150deg, var(--accent), var(--accent-dark)); color: #FFF8F2; border: none; }
+.act.reject { background: none; border-color: rgba(42,33,28,0.25); color: var(--ink-muted); }
+.act.delete { background: none; border-color: transparent; color: #B3261E; margin-left: auto; }
+.act:disabled { opacity: 0.4; cursor: default; }
+
+.empty { text-align: center; color: var(--ink-soft); padding: 60px 0; }
+.statusline { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+  background: var(--ink); color: #FFF8F2; padding: 11px 22px; border-radius: 999px; font-size: 0.9rem;
+  opacity: 0; transition: opacity .25s; pointer-events: none; box-shadow: var(--shadow); }
+.statusline.show { opacity: 1; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div id="login-view" class="admin-wrap">
+  <form class="login-card" id="login-form">
+    <img src="img/icon.png" alt="">
+    <h1>Modération<em class="dot">.</em></h1>
+    <input type="email" id="email" placeholder="E-mail" autocomplete="username" required>
+    <input type="password" id="password" placeholder="Mot de passe" autocomplete="current-password" required>
+    <button class="btn" type="submit" id="login-btn">Se connecter</button>
+    <p class="admin-error" id="login-error"></p>
+  </form>
+</div>
+
+<!-- ============ CONSOLE ============ -->
+<div id="console-view" class="admin-wrap" hidden>
+  <div class="admin-bar">
+    <span class="brand">Aisl<span>y</span> <span style="color:var(--ink-soft);font-size:0.85rem;font-family:-apple-system,sans-serif;font-weight:400"> · modération</span></span>
+    <button class="logout" id="logout">Se déconnecter</button>
+  </div>
+  <div class="tabs">
+    <button class="tab active" data-status="pending">En attente<span class="n" id="n-pending"></span></button>
+    <button class="tab" data-status="approved">Approuvés<span class="n" id="n-approved"></span></button>
+    <button class="tab" data-status="rejected">Refusés<span class="n" id="n-rejected"></span></button>
+  </div>
+  <div id="list"></div>
+  <p class="empty" id="empty" hidden>Rien ici — tout est modéré. ✨</p>
+</div>
+
+<p class="statusline" id="status"></p>
+
+<script>
+(function () {
+  var SB = "https://bocykgdzoyhjyslcqfdw.supabase.co";
+  var KEY = "sb_publishable_YBMIYcHEUEzH9VW2YFRuxw_-sUu78Gz";
+  var TK = "aisly.admin.token";
+
+  var PROTEINS = { poultry: "Volaille", beef: "Bœuf", veal: "Veau", lamb: "Agneau",
+                   mutton: "Mouton", pork: "Porc", fish: "Poisson", other: "Autre" };
+  var SEASONS = { spring: "Printemps", summer: "Été", autumn: "Automne", winter: "Hiver" };
+
+  var token = sessionStorage.getItem(TK);
+  var currentStatus = "pending";
+
+  var $ = function (id) { return document.getElementById(id); };
+  function headers(extra) {
+    var h = { "apikey": KEY, "Authorization": "Bearer " + (token || KEY), "Content-Type": "application/json" };
+    for (var k in (extra || {})) { h[k] = extra[k]; }
+    return h;
+  }
+  function toast(msg) {
+    var el = $("status");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(el._t);
+    el._t = setTimeout(function () { el.classList.remove("show"); }, 2600);
+  }
+  function showConsole(on) {
+    $("login-view").hidden = on;
+    $("console-view").hidden = !on;
+  }
+  function logout(msg) {
+    token = null;
+    sessionStorage.removeItem(TK);
+    showConsole(false);
+    if (msg) { $("login-error").textContent = msg; }
+  }
+  function guard(r) {
+    if (r.status === 401) { logout("Session expirée — reconnecte-toi."); throw new Error("401"); }
+    return r;
+  }
+
+  /* ---------- LOGIN ---------- */
+  $("login-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    $("login-btn").disabled = true;
+    $("login-error").textContent = "";
+    fetch(SB + "/auth/v1/token?grant_type=password", {
+      method: "POST",
+      headers: { "apikey": KEY, "Content-Type": "application/json" },
+      body: JSON.stringify({ email: $("email").value.trim(), password: $("password").value })
+    }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok) {
+          var raw = res.j.error_description || res.j.msg || "";
+          throw new Error(/invalid login credentials/i.test(raw) ? "Identifiants incorrects." : (raw || "Connexion refusée."));
+        }
+        token = res.j.access_token;
+        sessionStorage.setItem(TK, token);
+        return fetch(SB + "/rest/v1/rpc/is_moderator", { method: "POST", headers: headers(), body: "{}" })
+          .then(function (r) { return r.json(); });
+      })
+      .then(function (isMod) {
+        if (isMod !== true) { logout("Ce compte n'est pas modérateur."); return; }
+        showConsole(true);
+        refresh();
+      })
+      .catch(function (err) { $("login-error").textContent = err.message; })
+      .finally(function () { $("login-btn").disabled = false; });
+  });
+
+  $("logout").addEventListener("click", function () { logout(""); });
+
+  /* ---------- ONGLETS ---------- */
+  document.querySelectorAll(".tab").forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      document.querySelectorAll(".tab").forEach(function (t) { t.classList.remove("active"); });
+      tab.classList.add("active");
+      currentStatus = tab.dataset.status;
+      loadList();
+    });
+  });
+
+  /* ---------- DONNÉES ---------- */
+  function refresh() { loadCounts(); loadList(); }
+
+  function loadCounts() {
+    ["pending", "approved", "rejected"].forEach(function (s) {
+      fetch(SB + "/rest/v1/tips?select=id&status=eq." + s + "&source=eq.user", {
+        headers: headers({ "Prefer": "count=exact", "Range": "0-0", "Range-Unit": "items" })
+      }).then(guard).then(function (r) {
+        var range = r.headers.get("content-range") || "/0";
+        $("n-" + s).textContent = " " + (range.split("/")[1] || "0");
+      }).catch(function () {});
+    });
+  }
+
+  function loadList() {
+    $("list").innerHTML = "";
+    $("empty").hidden = true;
+    fetch(SB + "/rest/v1/tips?select=id,protein,season,mode,twist,sensory,author_name,created_at" +
+          "&status=eq." + currentStatus + "&source=eq.user&order=created_at.desc&limit=200",
+      { headers: headers() })
+      .then(guard).then(function (r) { return r.json(); })
+      .then(function (tips) {
+        if (!tips.length) { $("empty").hidden = false; return; }
+        tips.forEach(function (t) { $("list").appendChild(card(t)); });
+      })
+      .catch(function () { toast("Chargement impossible — réseau ?"); });
+  }
+
+  /* ---------- CARTE ---------- */
+  function card(t) {
+    var el = document.createElement("div");
+    el.className = "tip-card";
+
+    var meta = document.createElement("div");
+    meta.className = "tip-meta";
+    [PROTEINS[t.protein] || t.protein, SEASONS[t.season] || t.season, t.mode].forEach(function (label, i) {
+      if (!label) { return; }
+      var c = document.createElement("span");
+      c.className = i === 0 ? "chip" : "chip soft";
+      c.textContent = label;
+      meta.appendChild(c);
+    });
+    el.appendChild(meta);
+
+    var twist = document.createElement("p");
+    twist.className = "tip-twist";
+    twist.textContent = t.twist || "—";
+    el.appendChild(twist);
+
+    if (t.sensory) {
+      var sens = document.createElement("p");
+      sens.className = "tip-sensory";
+      sens.textContent = t.sensory;
+      el.appendChild(sens);
+    }
+
+    var byline = document.createElement("p");
+    byline.className = "tip-byline";
+    var date = t.created_at ? new Date(t.created_at).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) : "";
+    byline.textContent = (t.author_name ? "Par " + t.author_name + " · " : "Anonyme · ") + date;
+    el.appendChild(byline);
+
+    var actions = document.createElement("div");
+    actions.className = "tip-actions";
+    if (currentStatus !== "approved") { actions.appendChild(actBtn("Approuver", "approve", t, { status: "approved" }, el)); }
+    if (currentStatus !== "rejected") { actions.appendChild(actBtn("Refuser", "reject", t, { status: "rejected" }, el)); }
+    actions.appendChild(deleteBtn(t, el));
+    el.appendChild(actions);
+    return el;
+  }
+
+  function actBtn(label, cls, tip, patch, cardEl) {
+    var b = document.createElement("button");
+    b.className = "act " + cls;
+    b.textContent = label;
+    b.addEventListener("click", function () {
+      b.disabled = true;
+      fetch(SB + "/rest/v1/tips?id=eq." + tip.id, {
+        method: "PATCH", headers: headers({ "Prefer": "return=minimal" }), body: JSON.stringify(patch)
+      }).then(guard).then(function (r) {
+        if (!r.ok) { throw new Error(); }
+        cardEl.remove();
+        loadCounts();
+        toast(patch.status === "approved" ? "Tip approuvé — il rejoindra l'app à la prochaine sync." : "Tip refusé.");
+        if (!$("list").children.length) { $("empty").hidden = false; }
+      }).catch(function () { b.disabled = false; toast("Échec — réessaie."); });
+    });
+    return b;
+  }
+
+  function deleteBtn(tip, cardEl) {
+    var b = document.createElement("button");
+    b.className = "act delete";
+    b.textContent = "Supprimer";
+    b.addEventListener("click", function () {
+      if (!b.dataset.armed) {
+        b.dataset.armed = "1";
+        b.textContent = "Confirmer ?";
+        setTimeout(function () { delete b.dataset.armed; b.textContent = "Supprimer"; }, 3000);
+        return;
+      }
+      b.disabled = true;
+      fetch(SB + "/rest/v1/tips?id=eq." + tip.id, { method: "DELETE", headers: headers() })
+        .then(guard).then(function (r) {
+          if (!r.ok) { throw new Error(); }
+          cardEl.remove();
+          loadCounts();
+          toast("Tip supprimé définitivement.");
+          if (!$("list").children.length) { $("empty").hidden = false; }
+        }).catch(function () { b.disabled = false; toast("Échec — réessaie."); });
+    });
+    return b;
+  }
+
+  /* ---------- SESSION EXISTANTE ---------- */
+  if (token) {
+    fetch(SB + "/rest/v1/rpc/is_moderator", { method: "POST", headers: headers(), body: "{}" })
+      .then(function (r) { return r.ok ? r.json() : false; })
+      .then(function (isMod) { if (isMod === true) { showConsole(true); refresh(); } else { logout(""); } })
+      .catch(function () { logout(""); });
+  }
+})();
+</script>
+</body>
+</html>
