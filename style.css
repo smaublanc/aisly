@@ -178,6 +178,14 @@ a.store-badge:hover { transform: translateY(-2px); box-shadow: 0 24px 48px -24px
 .pricing-line { color: var(--ink-muted); font-size: 1.08rem; max-width: 44ch; margin: 0 auto; }
 .pricing-line strong { color: var(--ink); font-weight: 650; }
 
+/* ============ ANDROID (compteur de mains levées) ============ */
+.android-strip { text-align: center; padding-bottom: clamp(56px, 9vh, 110px); }
+.android-strip h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); font-weight: 600; margin: 10px 0 12px; }
+.android-copy { color: var(--ink-muted); max-width: 46ch; margin: 0 auto 22px; }
+.android-count { margin-top: 14px; color: var(--accent); font-weight: 600; font-size: 0.95rem; }
+.btn.is-done { opacity: 0.75; cursor: default; border-style: solid; }
+.btn:disabled { pointer-events: none; }
+
 /* ============ REVEALS (sobres, coupés sous reduced-motion) ============ */
 [data-reveal] { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
 [data-reveal].in { opacity: 1; transform: none; }

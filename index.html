@@ -168,6 +168,15 @@
       </div>
     </div>
   </section>
+
+  <!-- ============ ANDROID ============ -->
+  <section class="android-strip wrap" data-reveal>
+    <p class="eyebrow">Et Android&nbsp;?</p>
+    <h2>Tu es sur Android<em class="dot">&nbsp;?</em></h2>
+    <p class="android-copy">Aisly arrive d'abord sur iPhone. Lève la main pour la version Android — on la construira si vous êtes assez nombreux.</p>
+    <button class="btn ghost" id="android-vote" type="button">Je lève la main</button>
+    <p class="android-count" id="android-count" hidden></p>
+  </section>
 </main>
 
 <footer class="site">
@@ -181,14 +190,61 @@
 (function () {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     document.querySelectorAll("[data-reveal]").forEach(function (el) { el.classList.add("in"); });
-    return;
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.14 });
+    document.querySelectorAll("[data-reveal]").forEach(function (el) { io.observe(el); });
   }
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+
+  /* Compteur Android — Supabase (clé anonyme PUBLIQUE par design ; la RLS ne permet que
+     d'insérer une ligne anonyme et de lire le COMPTE, jamais les lignes). Un clic volontaire,
+     zéro donnée personnelle. Anti-double-clic via localStorage. Dégradation silencieuse. */
+  var SB_URL = "https://bocykgdzoyhjyslcqfdw.supabase.co";
+  var SB_KEY = "sb_publishable_YBMIYcHEUEzH9VW2YFRuxw_-sUu78Gz";
+  var VOTED_KEY = "aisly.androidHand";
+  var btn = document.getElementById("android-vote");
+  var countEl = document.getElementById("android-count");
+  if (!btn || !countEl) { return; }
+
+  function headers() {
+    return { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" };
+  }
+  function showCount(n) {
+    if (typeof n !== "number" || n < 1) { countEl.hidden = true; return; }
+    countEl.textContent = n === 1 ? "Déjà 1 main levée" : "Déjà " + n + " mains levées";
+    countEl.hidden = false;
+  }
+  function markVoted() {
+    btn.textContent = "Main levée ✓";
+    btn.disabled = true;
+    btn.classList.add("is-done");
+  }
+
+  if (localStorage.getItem(VOTED_KEY)) { markVoted(); }
+
+  fetch(SB_URL + "/rest/v1/rpc/android_interest_count", { method: "POST", headers: headers(), body: "{}" })
+    .then(function (r) { return r.json(); })
+    .then(function (n) { showCount(Number(n)); })
+    .catch(function () { /* hors-ligne : pas de compteur, le bouton reste utile */ });
+
+  btn.addEventListener("click", function () {
+    if (localStorage.getItem(VOTED_KEY)) { return; }
+    btn.disabled = true;
+    fetch(SB_URL + "/rest/v1/android_interest", {
+      method: "POST", headers: Object.assign(headers(), { "Prefer": "return=minimal" }), body: "{}"
+    }).then(function (r) {
+      if (!r.ok) { throw new Error(String(r.status)); }
+      localStorage.setItem(VOTED_KEY, "1");
+      markVoted();
+      var current = parseInt((countEl.textContent.match(/\d+/) || ["0"])[0], 10);
+      showCount(current + 1);
+    }).catch(function () {
+      btn.disabled = false;   /* échec réseau : on laisse retenter */
     });
-  }, { threshold: 0.14 });
-  document.querySelectorAll("[data-reveal]").forEach(function (el) { io.observe(el); });
+  });
 })();
 </script>
 </body>
