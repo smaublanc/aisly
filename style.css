@@ -187,6 +187,12 @@ a.store-badge:hover { transform: translateY(-2px); box-shadow: 0 24px 48px -24px
 .pricing-line { color: var(--ink-muted); font-size: 1.08rem; max-width: 44ch; margin: 0 auto; }
 .pricing-line strong { color: var(--ink); font-weight: 650; }
 
+/* ============ COMMUNAUTÉ (encart éditorial) ============ */
+.community-strip { text-align: center; padding: clamp(8px, 2vh, 24px) 24px clamp(40px, 7vh, 80px); }
+.community-strip h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); font-weight: 600; margin: 10px 0 12px; }
+.community-copy { color: var(--ink-muted); max-width: 52ch; margin: 0 auto; }
+.community-copy strong { color: var(--ink); font-weight: 650; }
+
 /* ============ ANDROID (compteur de mains levées) ============ */
 .android-strip { text-align: center; padding-bottom: clamp(56px, 9vh, 110px); }
 .android-strip h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); font-weight: 600; margin: 10px 0 12px; }
