@@ -22,7 +22,10 @@
 .login-card .btn { width: 100%; border: none; font-size: 1rem; cursor: pointer; }
 .admin-error { color: #B3261E; font-size: 0.9rem; margin: 10px 0 0; min-height: 1.2em; }
 
-.admin-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.admin-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.android-stat { color: var(--ink-muted); font-size: 0.9rem; margin: 0 0 18px;
+  padding: 10px 14px; background: rgba(192,86,58,0.07); border-radius: 12px; }
+.android-stat strong { color: var(--accent); font-size: 1.05rem; }
 .admin-bar .brand { font-size: 1.3rem; }
 .logout { background: none; border: none; color: var(--ink-muted); font-size: 0.9rem; cursor: pointer; }
 .logout:hover { color: var(--accent); }
@@ -81,6 +84,7 @@
     <span class="brand">Aisl<span>y</span> <span style="color:var(--ink-soft);font-size:0.85rem;font-family:-apple-system,sans-serif;font-weight:400"> · modération</span></span>
     <button class="logout" id="logout">Se déconnecter</button>
   </div>
+  <p class="android-stat" id="android-stat" hidden>Version Android : <strong id="android-n">–</strong> mains levées</p>
   <div class="tabs">
     <button class="tab active" data-status="pending">En attente<span class="n" id="n-pending"></span></button>
     <button class="tab" data-status="approved">Approuvés<span class="n" id="n-approved"></span></button>
@@ -175,7 +179,19 @@
   });
 
   /* ---------- DONNÉES ---------- */
-  function refresh() { loadCounts(); loadList(); }
+  function refresh() { loadCounts(); loadList(); loadAndroidStat(); }
+
+  /* Compteur « mains levées Android » (D94) — même RPC publique que la landing. */
+  function loadAndroidStat() {
+    fetch(SB + "/rest/v1/rpc/android_interest_count", { method: "POST", headers: headers(), body: "{}" })
+      .then(function (r) { return r.json(); })
+      .then(function (n) {
+        if (typeof n !== "number") { return; }
+        $("android-n").textContent = n;
+        $("android-stat").hidden = false;
+      })
+      .catch(function () { /* hors-ligne : la stat reste cachée */ });
+  }
 
   function loadCounts() {
     ["pending", "approved", "rejected"].forEach(function (s) {
